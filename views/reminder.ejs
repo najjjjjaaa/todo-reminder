@@ -1,0 +1,105 @@
+<div class="container mx-auto px-4 py-8 min-h-screen bg-[#EADDC4]">
+  <div class="max-w-md mx-auto p-6">
+    <!-- Reminders Section -->
+    <a href='/choose' class="text-sm font-medium mb-6 text-start text-[#4A3A29]">
+      back
+    </a>
+    <h1 class="text-3xl font-bold mb-8 text-center text-[#4A3A29]">
+      [ ✦ Reminders ✦ ]
+    </h1>
+
+    <form action="/add-reminder" method="POST" class="mb-8">
+      <div class="flex flex-col gap-3 shadow-lg">
+        <div class="flex gap-2">
+          <input type="text" name="reminderText" 
+                 class="flex-1 px-6 py-3 rounded-full border-2 border-[#3A2D1D] bg-[#F5F0E6] focus:outline-none focus:ring-2 focus:ring-[#B19471] text-[#4A3A29] placeholder-[#B19471]"
+                 placeholder="🔔 Add reminder...">
+        </div>
+        <div class="flex gap-2">
+          <input type="datetime-local" name="reminderTime" 
+                 class="flex-1 px-6 py-3 rounded-full border-2 border-[#3A2D1D] bg-[#F5F0E6] focus:outline-none focus:ring-2 focus:ring-[#B19471] text-[#4A3A29]">
+          <button type="submit" 
+                  class="px-6 py-3 bg-[#B19471] text-white rounded-full border-2 border-[#3A2D1D] shadow-md hover:bg-[#9C7D5A] transition-colors flex items-center">
+            Add ⏳
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="space-y-3" id="reminders-container">
+      <% reminders.forEach(reminder => { %>
+        <div
+        data-text="<%= reminder.text %>"
+        data-time="<%= reminder.time %>"
+        data-notified="<%= reminder.notified %>"
+
+        class="group flex items-center p-4 <%= reminder.notified ? 'bg-[#D8C3A5]' : 'bg-[#F5F0E6]' %> rounded-2xl border-2 border-[#3A2D1D] shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex-1">
+            <span class="text-lg <%= reminder.notified ? 'line-through text-[#B19471]' : 'text-[#4A3A29]' %>">
+              <%= reminder.text %>
+            </span>
+            <span class="block text-sm text-[#B19471]">⏰ <%= reminder.time %></span>
+          </div>
+          <div class="ml-auto flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <form action="/complete-reminder/<%= reminder.id %>" method="POST" class="inline">
+              <button type="submit" class="p-1 hover:text-[#B19471]">✓</button>
+            </form>
+            <form action="/delete-reminder/<%= reminder.id %>" method="POST" class="inline">
+              <button type="submit" class="p-1 hover:text-[#B19471]">✗</button>
+            </form>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <div class="mt-8 text-center text-[#4A3A29]">
+      <p class="text-sm">✧･ﾟ: *✧･ﾟ:* You're doing great! *:･ﾟ✧*:･ﾟ✧</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const reminders = [];
+
+  // Read reminders from the DOM
+  document.querySelectorAll("#reminders-container > div").forEach(reminderEl => {
+    reminders.push({
+      text: reminderEl.getAttribute("data-text"),
+      time: new Date(reminderEl.getAttribute("data-time")), // Convert to Date object here
+      notified: reminderEl.getAttribute("data-notified") === "true"
+    });
+  });
+   console.log(reminders)
+
+  // Function to check reminders
+    function checkReminders() {
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+
+    reminders.forEach(reminder => {
+      const reminderHours = reminder.time.getHours();
+      const reminderMinutes = reminder.time.getMinutes();
+      console.log(reminderMinutes);
+      if (!reminder.notified && currentHours === reminderHours && currentMinutes === reminderMinutes) {
+        // Show an alert
+        alert(`Reminder: ${reminder.text}`);
+
+        // Mark the reminder as notified (you might want to send a request to the server to update this)
+        reminder.notified = true;
+      }
+    });
+  }
+
+  // Check reminders every minute
+  setInterval(checkReminders, 60000);
+
+  // Initial check
+  checkReminders();
+});
+
+  </script>
+  
+</div>
+
+

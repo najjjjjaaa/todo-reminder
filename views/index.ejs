@@ -1,0 +1,19 @@
+<div class="flex items-center justify-center h-screen">
+  <div class="text-center mx-auto flex flex-col">
+    <div class="relative inline-block">
+      <img src="/toast-icon.png" alt="Toast Icon" class="size-24 mx-auto -z-10 -mb-10" />
+    </div>
+    <!-- Form to submit name -->
+    <form action="/welcome" method="POST" class="z-10 mt-4">
+      <input
+        type="text"
+        name="userName"
+        placeholder="ENTER YOUR NAME"
+        class="w-72 px-4 py-2 text-center text-[#4A3A29] bg-[#B19471] rounded-full border border-[#3A2D1D] focus:outline-none shadow-md"
+        required
+      />
+      <!-- Hidden button to allow Enter key to submit the form -->
+      <button type="submit" hidden></button>
+    </form>
+  </div>
+</div>

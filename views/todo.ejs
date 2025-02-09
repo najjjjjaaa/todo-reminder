@@ -1,0 +1,45 @@
+<div class="container mx-auto px-4 py-8 min-h-screen bg-[#EADDC4]">
+  <div class="max-w-md mx-auto p-6">
+    
+    <a href='/choose' class="text-sm font-medium mb-6 text-start text-[#4A3A29]">
+      back
+    </a>
+    <h1 class="text-3xl font-bold mb-8 text-center text-[#4A3A29]">
+      [ ✦ Todo List ✦ ]
+    </h1>
+    
+    <form action="/add-todo" method="POST" class="mb-8">
+      <div class="flex gap-2 shadow-lg">
+        <input type="text" name="todoText" 
+               class="flex-1 px-6 py-3 rounded-full border-2 border-[#3A2D1D] bg-[#F5F0E6] focus:outline-none focus:ring-2 focus:ring-[#B19471] text-[#4A3A29] placeholder-[#B19471]"
+               placeholder="✎ Add new task...">
+        <button type="submit" 
+                class="px-6 py-3 bg-[#B19471] text-white rounded-full border-2 border-[#3A2D1D] shadow-md hover:bg-[#9C7D5A] transition-colors flex items-center">
+          Add 🌸
+        </button>
+      </div>
+    </form>
+
+    <div class="space-y-3">
+      <% todos.forEach(todo => { %>
+        <div class="group flex items-center p-4 <%= todo.completed ? 'bg-[#D8C3A5]' : 'bg-[#F5F0E6]' %> rounded-2xl border-2 border-[#3A2D1D] shadow-sm hover:shadow-md transition-shadow">
+          <span class="text-lg <%= todo.completed ? 'line-through text-[#B19471]' : 'text-[#4A3A29]' %>">
+            <%= todo.text %>
+          </span>
+          <div class="ml-auto flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <form action="/complete-todo/<%= todo.id %>" method="POST" class="inline">
+              <button type="submit" class="p-1 hover:text-[#B19471]">✓</button>
+            </form>
+            <form action="/delete-todo/<%= todo.id %>" method="POST" class="inline">
+              <button type="submit" class="p-1 hover:text-[#B19471]">✗</button>
+            </form>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <div class="mt-8 text-center text-[#4A3A29]">
+      <p class="text-sm">✧･ﾟ: *✧･ﾟ:* You've got this! *:･ﾟ✧*:･ﾟ✧</p>
+    </div>
+  </div>
+</div>
